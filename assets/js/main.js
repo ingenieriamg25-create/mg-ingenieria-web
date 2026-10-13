@@ -491,9 +491,53 @@ document.getElementById('btnMail')?.addEventListener('click', () => {
   window.location.href =
     `mailto:${CONFIG.email}?subject=${encodeURIComponent(asunto)}&body=${encodeURIComponent(cuerpo)}`;
 
+  // Si el visitante no tiene programa de correo configurado, el mailto no
+  // hace nada visible: por eso se ofrece también Gmail en el navegador.
+  const gmail = document.createElement('a');
+  gmail.href = 'https://mail.google.com/mail/?view=cm&fs=1'
+    + `&to=${encodeURIComponent(CONFIG.email)}&su=${encodeURIComponent(asunto)}&body=${encodeURIComponent(cuerpo)}`;
+  gmail.target = '_blank';
+  gmail.rel = 'noopener';
+  gmail.textContent = 'ábrela en Gmail';
+
   status.className = 'form-status ok';
-  status.textContent = '✓ Abrimos tu programa de correo con la solicitud lista para enviar.';
+  status.replaceChildren(
+    '✓ Abrimos tu programa de correo con la solicitud lista. ¿No se abrió? ', gmail,
+    ` o usa «Copiar resumen» y envíala a ${CONFIG.email}.`);
 });
+
+/* --- Copiar la dirección de correo (tarjeta de contacto) --- */
+document.querySelectorAll('[data-copiar]').forEach(btn => {
+  btn.addEventListener('click', async () => {
+    const original = btn.textContent;
+    try {
+      await copiarTexto(btn.dataset.copiar);
+      btn.textContent = '✓ Copiado';
+    } catch {
+      btn.textContent = 'No se pudo copiar';
+    }
+    setTimeout(() => { btn.textContent = original; }, 2000);
+  });
+});
+
+/* Copiar al portapapeles. Algunos navegadores bloquean la API moderna
+   (sin https, ventanas embebidas, permisos): ahí se usa el método antiguo. */
+async function copiarTexto(texto) {
+  try {
+    await navigator.clipboard.writeText(texto);
+    return;
+  } catch { /* se intenta el método antiguo */ }
+
+  const area = document.createElement('textarea');
+  area.value = texto;
+  area.setAttribute('readonly', '');
+  area.style.cssText = 'position:fixed;top:0;left:0;opacity:0';
+  document.body.appendChild(area);
+  area.select();
+  const ok = document.execCommand('copy');
+  area.remove();
+  if (!ok) throw new Error('no se pudo copiar');
+}
 
 /* --- Copiar resumen al portapapeles --- */
 document.getElementById('btnCopy')?.addEventListener('click', async () => {
@@ -501,7 +545,7 @@ document.getElementById('btnCopy')?.addEventListener('click', async () => {
 
   const texto = resumen().replace(/\*/g, '');
   try {
-    await navigator.clipboard.writeText(texto);
+    await copiarTexto(texto);
     status.className = 'form-status ok';
     status.textContent = '✓ Resumen copiado. Ya puedes pegarlo donde lo necesites.';
   } catch {

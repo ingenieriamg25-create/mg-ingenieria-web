@@ -423,6 +423,15 @@ a.contact-card:hover{background:rgba(255,255,255,.1);transform:translateY(-6px);
 .contact-card h3{font-size:.82rem;letter-spacing:.16em;text-transform:uppercase;color:var(--gold-300);margin-bottom:.15rem}
 .contact-card p{color:#fff;font-weight:600;margin:0;font-size:.95rem;overflow-wrap:anywhere;hyphens:none}
 .contact-go{margin-top:.6rem;font-size:.78rem;color:rgba(255,255,255,.55)}
+/* Tarjeta de correo: no todos tienen un programa de correo configurado,
+   así que se ofrece también Gmail en el navegador y copiar la dirección */
+.contact-actions{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.6rem}
+.contact-actions a,.contact-actions button{
+  font:inherit;font-size:.74rem;font-weight:600;line-height:1;cursor:pointer;
+  padding:.5rem .75rem;border-radius:999px;color:var(--gold-300);background:transparent;
+  border:1px solid rgba(230,189,109,.45);transition:background .2s,color .2s,border-color .2s}
+.contact-actions a:hover,.contact-actions button:hover{background:rgba(200,149,47,.15);color:#fff;border-color:var(--gold)}
+.form-status a{color:inherit;font-weight:700;text-decoration:underline}
 
 /* ───────── Footer ───────── */
 .site-footer{background:var(--navy-900);color:rgba(255,255,255,.6);padding-top:3.5rem}
@@ -1041,10 +1050,15 @@ a.contact-card:hover{background:rgba(255,255,255,.1);transform:translateY(-6px);
         <svg class="ico ico-fill" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15l-1.3 4.7 4.8-1.3A10 10 0 1 0 12 2m5.5 14.2c-.2.7-1.3 1.3-1.9 1.3-.5 0-1.1.2-3.6-.8-3-1.3-5-4.4-5.1-4.6s-1.2-1.6-1.2-3 .8-2.1 1-2.4c.3-.3.6-.4.8-.4h.6c.2 0 .5-.1.7.5l1 2.4c.1.2.1.4 0 .6l-.4.6-.3.3c-.1.2-.3.3-.1.6s.7 1.2 1.5 1.9c1 .9 1.9 1.2 2.2 1.3.2.1.4.1.6-.1l.8-1c.2-.2.4-.2.6-.1l2.2 1c.3.1.5.2.6.3.1.2.1.7-.1 1.3"/></svg>
         <h3>WhatsApp</h3><p>+56 9 9676 1602</p><span class="contact-go">Escribir ahora →</span>
       </a>
-      <a class="contact-card reveal" href="mailto:maguayo@mgingenieria.cl?subject=Consulta%20de%20servicios%20-%20MG%20Ingenier%C3%ADa">
+      <div class="contact-card reveal">
         <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 7l10 7 10-7"/></svg>
-        <h3>Correo</h3><p>maguayo@mgingenieria.cl</p><span class="contact-go">Enviar correo →</span>
-      </a>
+        <h3>Correo</h3><p>maguayo@mgingenieria.cl</p>
+        <div class="contact-actions">
+          <a href="mailto:maguayo@mgingenieria.cl?subject=Consulta%20de%20servicios%20-%20MG%20Ingenier%C3%ADa">Abrir correo</a>
+          <a href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=maguayo@mgingenieria.cl&amp;su=Consulta%20de%20servicios%20-%20MG%20Ingenier%C3%ADa" target="_blank" rel="noopener">Gmail</a>
+          <button type="button" data-copiar="maguayo@mgingenieria.cl">Copiar</button>
+        </div>
+      </div>
       <div class="contact-card reveal">
         <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22s8-6.2 8-12a8 8 0 1 0-16 0c0 5.8 8 12 8 12z"/><circle cx="12" cy="10" r="3"/></svg>
         <h3>Ubicación</h3><p>Curicó, Región del Maule<br>Chile</p><span class="contact-go">Proyectos en todo el país</span>
@@ -1627,9 +1641,53 @@ document.getElementById('btnMail')?.addEventListener('click', () => {
   window.location.href =
     `mailto:${CONFIG.email}?subject=${encodeURIComponent(asunto)}&body=${encodeURIComponent(cuerpo)}`;
 
+  // Si el visitante no tiene programa de correo configurado, el mailto no
+  // hace nada visible: por eso se ofrece también Gmail en el navegador.
+  const gmail = document.createElement('a');
+  gmail.href = 'https://mail.google.com/mail/?view=cm&fs=1'
+    + `&to=${encodeURIComponent(CONFIG.email)}&su=${encodeURIComponent(asunto)}&body=${encodeURIComponent(cuerpo)}`;
+  gmail.target = '_blank';
+  gmail.rel = 'noopener';
+  gmail.textContent = 'ábrela en Gmail';
+
   status.className = 'form-status ok';
-  status.textContent = '✓ Abrimos tu programa de correo con la solicitud lista para enviar.';
+  status.replaceChildren(
+    '✓ Abrimos tu programa de correo con la solicitud lista. ¿No se abrió? ', gmail,
+    ` o usa «Copiar resumen» y envíala a ${CONFIG.email}.`);
 });
+
+/* --- Copiar la dirección de correo (tarjeta de contacto) --- */
+document.querySelectorAll('[data-copiar]').forEach(btn => {
+  btn.addEventListener('click', async () => {
+    const original = btn.textContent;
+    try {
+      await copiarTexto(btn.dataset.copiar);
+      btn.textContent = '✓ Copiado';
+    } catch {
+      btn.textContent = 'No se pudo copiar';
+    }
+    setTimeout(() => { btn.textContent = original; }, 2000);
+  });
+});
+
+/* Copiar al portapapeles. Algunos navegadores bloquean la API moderna
+   (sin https, ventanas embebidas, permisos): ahí se usa el método antiguo. */
+async function copiarTexto(texto) {
+  try {
+    await navigator.clipboard.writeText(texto);
+    return;
+  } catch { /* se intenta el método antiguo */ }
+
+  const area = document.createElement('textarea');
+  area.value = texto;
+  area.setAttribute('readonly', '');
+  area.style.cssText = 'position:fixed;top:0;left:0;opacity:0';
+  document.body.appendChild(area);
+  area.select();
+  const ok = document.execCommand('copy');
+  area.remove();
+  if (!ok) throw new Error('no se pudo copiar');
+}
 
 /* --- Copiar resumen al portapapeles --- */
 document.getElementById('btnCopy')?.addEventListener('click', async () => {
@@ -1637,7 +1695,7 @@ document.getElementById('btnCopy')?.addEventListener('click', async () => {
 
   const texto = resumen().replace(/\*/g, '');
   try {
-    await navigator.clipboard.writeText(texto);
+    await copiarTexto(texto);
     status.className = 'form-status ok';
     status.textContent = '✓ Resumen copiado. Ya puedes pegarlo donde lo necesites.';
   } catch {
