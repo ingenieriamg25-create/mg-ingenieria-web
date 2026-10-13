@@ -149,10 +149,9 @@ una página nueva, hay que sumarla al sitemap.
 
 ## Cosas pendientes o abiertas
 
-- **Correo con el dominio.** Quedó conversado pero no implementado. Hoy el contacto es una
-  cuenta de Gmail. Pasar a `contacto@mgingenieria.cl` requiere elegir proveedor (Google
-  Workspace, Zoho gratis o reenvío de Cloudflare) y agregar registros MX, SPF, DKIM y DMARC
-  en Cloudflare. Hoy el dominio no tiene ningún registro MX ni TXT.
+- **Correo con el dominio.** Ya está en Google Workspace: el contacto del sitio es
+  `maguayo@mgingenieria.cl`, y el DNS tiene MX, SPF y DKIM. Falta el registro DMARC
+  (`_dmarc`), que ayuda a que los correos de la oficina no caigan en spam.
 - **Ampliaciones sobre 99 m².** Hoy muestran "A convenir" porque la tabla de ampliaciones
   llega hasta ahí. Falta decidir si deberían caer en la tabla habitacional.
 - **Logo para fondos claros.** El logo actual es claro sobre oscuro y desaparece en blanco.

@@ -268,11 +268,9 @@ sección "Reglas que importan" es la que evita los errores caros.
 
 ## Lo que queda abierto
 
-- **Correo con el dominio.** Hoy el contacto del sitio es una cuenta de Gmail. Pasar a algo
-  como `contacto@mgingenieria.cl` requiere elegir proveedor (Google Workspace pagado, Zoho
-  gratis, o reenvío de Cloudflare) y agregar registros MX, SPF, DKIM y DMARC. El dominio hoy
-  no tiene ninguno. Conviene decidirlo **después** del traspaso, para configurarlo
-  directamente en la cuenta de MG Ingeniería y no tener que migrarlo dos veces.
+- **Correo con el dominio.** Ya funciona con Google Workspace y el sitio usa
+  `maguayo@mgingenieria.cl`. Queda pendiente agregar en Cloudflare un registro DMARC
+  (`_dmarc`), que ayuda a que los correos no caigan en spam.
 - **Dirección para compartir.** `www.mgingenieria.cl` funciona y redirige sola, pero la que
   conviene poner en tarjetas, firmas y redes sociales es `https://mgingenieria.cl`,
   **sin `www`**.

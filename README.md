@@ -55,7 +55,7 @@ Todo lo configurable está al inicio de `assets/js/main.js`, en el bloque `CONFI
 
 ```js
 whatsapp: '56996761602',        // sin "+" ni espacios
-email:    'ingenieria.mg25@gmail.com',
+email:    'maguayo@mgingenieria.cl',
 ufValor:  41146.83,             // solo respaldo: la UF se consulta sola
 habitacional: [ ... ],          // tabla de precios por tramo y materialidad
 ampliacion:   [ ... ],          // tabla propia, bajo 100 m²

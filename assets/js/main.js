@@ -7,7 +7,7 @@
 const CONFIG = {
   // Número de WhatsApp en formato internacional, SIN "+" ni espacios.
   whatsapp: '56996761602',
-  email: 'ingenieria.mg25@gmail.com',
+  email: 'maguayo@mgingenieria.cl',
 
   /* ---- Cotizador estimativo ----------------------------------
      Precios base en pesos, tomados de la tabla de tarifas 2026.
