@@ -31,6 +31,8 @@ assets/img/favicon.png          Ícono de pestaña
 assets/img/og.jpg               Imagen para redes sociales, 1200×630
 CNAME                   El dominio, para GitHub Pages. No borrar
 construir.py            Arma mg-ingenieria.html (versión de un solo archivo)
+_config.yml             Excluye la documentación y construir.py de la publicación
+robots.txt, sitemap.xml Para buscadores
 mg-ingenieria.html      Generado. No se edita a mano: se regenera con construir.py
 README.md               Explicación para el dueño del sitio, no para el agente
 ```
@@ -87,7 +89,7 @@ formulario.
 
 **2. La animación del sketch de la portada es delicada.**
 El sketch estructural se dibuja solo, por etapas, siguiendo el orden real de obra: terreno,
-zapatas, pilares, vigas y losa, segundo nivel, cubierta y al final las cotas. Los 112
+zapatas, pilares, vigas y losa, segundo nivel, cubierta y al final las cotas. Los 111
 trazos son elementos `.sk` con un atributo `data-p` que dice en qué etapa entran.
 
 El truco está en `main.js`: para que el navegador anime, hay que fijar el estado inicial
@@ -134,9 +136,16 @@ tiene que seguir existiendo en la raíz: si se borra, Pages vuelve a la direcci�
 El DNS está en Cloudflare: registros A del ápice hacia las direcciones de GitHub Pages y un
 CNAME para `www`. El certificado HTTPS lo emite GitHub.
 
-Detalle conocido: GitHub emite certificado para el dominio a secas, no para `www`, así que
-`https://www.mgingenieria.cl` muestra advertencia de certificado. La dirección que hay que
-compartir es **https://mgingenieria.cl** sin `www`.
+El certificado cubre `mgingenieria.cl` y `www.mgingenieria.cl`; `www` redirige sola al
+dominio a secas. La dirección que hay que compartir es **https://mgingenieria.cl** sin `www`.
+
+`_config.yml` excluye de la publicación la documentación y `construir.py`, para que no se
+puedan abrir desde el dominio. Si agregas otro archivo que no sea parte de la página
+(notas, scripts), súmalo a esa lista. Ojo: el repositorio es público igual, así que la
+regla 1 sigue valiendo.
+
+`robots.txt` y `sitemap.xml` están en la raíz para los buscadores. Si algún día se agrega
+una página nueva, hay que sumarla al sitemap.
 
 ## Cosas pendientes o abiertas
 

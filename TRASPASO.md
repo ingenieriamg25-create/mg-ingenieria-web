@@ -273,8 +273,8 @@ sección "Reglas que importan" es la que evita los errores caros.
   gratis, o reenvío de Cloudflare) y agregar registros MX, SPF, DKIM y DMARC. El dominio hoy
   no tiene ninguno. Conviene decidirlo **después** del traspaso, para configurarlo
   directamente en la cuenta de MG Ingeniería y no tener que migrarlo dos veces.
-- **`www` sin certificado propio.** GitHub emite el certificado para `mgingenieria.cl` a
-  secas, no para `www.mgingenieria.cl`. La dirección que conviene poner en tarjetas, firmas y
-  redes sociales es `https://mgingenieria.cl`, **sin `www`**.
+- **Dirección para compartir.** `www.mgingenieria.cl` funciona y redirige sola, pero la que
+  conviene poner en tarjetas, firmas y redes sociales es `https://mgingenieria.cl`,
+  **sin `www`**.
 - **Ampliaciones sobre 99 m².** El cotizador muestra "A convenir" porque la tabla llega hasta
   ahí. Falta definir si deberían calcularse con la tabla habitacional.

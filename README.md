@@ -56,7 +56,7 @@ Todo lo configurable está al inicio de `assets/js/main.js`, en el bloque `CONFI
 ```js
 whatsapp: '56996761602',        // sin "+" ni espacios
 email:    'ingenieria.mg25@gmail.com',
-ufValor:  40844.79,             // solo respaldo: la UF se consulta sola
+ufValor:  41146.83,             // solo respaldo: la UF se consulta sola
 habitacional: [ ... ],          // tabla de precios por tramo y materialidad
 ampliacion:   [ ... ],          // tabla propia, bajo 100 m²
 adicionales:  { eett: {...}, cubicacion: {...} },
@@ -116,10 +116,15 @@ branch*). El archivo `CNAME` de la raíz es el que le dice a Pages cuál es el d
 borra, el sitio vuelve a la dirección `*.github.io`.
 
 El **DNS está en Cloudflare**, con los registros A del dominio apuntando a GitHub Pages y un
-CNAME para `www`. El certificado HTTPS lo emite GitHub automáticamente.
+CNAME para `www`. El certificado HTTPS lo emite GitHub automáticamente y cubre las dos
+direcciones: `www.mgingenieria.cl` redirige sola a `mgingenieria.cl`.
 
-> GitHub emite el certificado para `mgingenieria.cl` a secas, no para `www`. La dirección que
-> conviene compartir en tarjetas, firmas y redes es **https://mgingenieria.cl**, sin `www`.
+> La dirección que conviene compartir en tarjetas, firmas y redes es
+> **https://mgingenieria.cl**, sin `www`: es la principal y la más corta.
+
+Los archivos de documentación (`README.md`, `CLAUDE.md`, `TRASPASO.md`) y `construir.py`
+no se publican en el dominio: los excluye `_config.yml`. Siguen visibles en el repositorio
+de GitHub, que es público.
 
 Para ver el sitio en tu computador antes de publicar un cambio, abre `index.html` con doble clic.
 

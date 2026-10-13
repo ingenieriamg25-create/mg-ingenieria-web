@@ -22,7 +22,7 @@ const CONFIG = {
   // La UF se consulta sola a mindicador.cl (API pública, sin registro).
   // Este número solo se usa si la consulta falla; conviene refrescarlo
   // de vez en cuando para que el respaldo no quede muy viejo.
-  ufValor: 40844.79,
+  ufValor: 41146.83,
   ufApi: 'https://mindicador.cl/api/uf',
 
   materiales: ['sip', 'metalcon', 'albanileria', 'piedra', 'hormigon', 'acero', 'mixto'],

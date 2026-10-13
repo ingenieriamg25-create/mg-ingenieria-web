@@ -1,0 +1,7 @@
+# GitHub Pages: archivos del repositorio que NO se publican en mgingenieria.cl.
+# Siguen visibles en GitHub (el repositorio es público).
+exclude:
+  - README.md
+  - CLAUDE.md
+  - TRASPASO.md
+  - construir.py
