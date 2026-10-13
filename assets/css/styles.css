@@ -396,12 +396,17 @@ a.contact-card:hover{background:rgba(255,255,255,.1);transform:translateY(-6px);
 .contact-go{margin-top:.6rem;font-size:.78rem;color:rgba(255,255,255,.55)}
 /* Tarjeta de correo: no todos tienen un programa de correo configurado,
    así que se ofrece también Gmail en el navegador y copiar la dirección */
-.contact-actions{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.6rem}
-.contact-actions a,.contact-actions button{
-  font:inherit;font-size:.74rem;font-weight:600;line-height:1;cursor:pointer;
-  padding:.5rem .75rem;border-radius:999px;color:var(--gold-300);background:transparent;
-  border:1px solid rgba(230,189,109,.45);transition:background .2s,color .2s,border-color .2s}
-.contact-actions a:hover,.contact-actions button:hover{background:rgba(200,149,47,.15);color:#fff;border-color:var(--gold)}
+.contact-card-mail{position:relative}
+.copy-ico{position:absolute;top:1.1rem;right:1.1rem;display:grid;place-items:center;width:28px;height:28px;padding:0;cursor:pointer;
+  border:0;border-radius:6px;background:transparent;color:rgba(255,255,255,.5);transition:background .2s,color .2s}
+.copy-ico:hover{background:rgba(255,255,255,.1);color:var(--gold-300)}
+.copy-ico svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.copy-ico .i-ok,.copy-ico.copiado .i-copiar{display:none}
+.copy-ico.copiado .i-ok{display:block}
+.copy-ico.copiado{color:#4fd18b}
+.contact-links{display:flex;flex-wrap:wrap;gap:.2rem 1.1rem;margin-top:.6rem}
+.contact-links .contact-go{margin-top:0;transition:color .2s}
+.contact-links .contact-go:hover{color:var(--gold-300)}
 .form-status a{color:inherit;font-weight:700;text-decoration:underline}
 
 /* ───────── Footer ───────── */

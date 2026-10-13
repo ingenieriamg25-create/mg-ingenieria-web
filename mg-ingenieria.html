@@ -425,12 +425,17 @@ a.contact-card:hover{background:rgba(255,255,255,.1);transform:translateY(-6px);
 .contact-go{margin-top:.6rem;font-size:.78rem;color:rgba(255,255,255,.55)}
 /* Tarjeta de correo: no todos tienen un programa de correo configurado,
    así que se ofrece también Gmail en el navegador y copiar la dirección */
-.contact-actions{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.6rem}
-.contact-actions a,.contact-actions button{
-  font:inherit;font-size:.74rem;font-weight:600;line-height:1;cursor:pointer;
-  padding:.5rem .75rem;border-radius:999px;color:var(--gold-300);background:transparent;
-  border:1px solid rgba(230,189,109,.45);transition:background .2s,color .2s,border-color .2s}
-.contact-actions a:hover,.contact-actions button:hover{background:rgba(200,149,47,.15);color:#fff;border-color:var(--gold)}
+.contact-card-mail{position:relative}
+.copy-ico{position:absolute;top:1.1rem;right:1.1rem;display:grid;place-items:center;width:28px;height:28px;padding:0;cursor:pointer;
+  border:0;border-radius:6px;background:transparent;color:rgba(255,255,255,.5);transition:background .2s,color .2s}
+.copy-ico:hover{background:rgba(255,255,255,.1);color:var(--gold-300)}
+.copy-ico svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.copy-ico .i-ok,.copy-ico.copiado .i-copiar{display:none}
+.copy-ico.copiado .i-ok{display:block}
+.copy-ico.copiado{color:#4fd18b}
+.contact-links{display:flex;flex-wrap:wrap;gap:.2rem 1.1rem;margin-top:.6rem}
+.contact-links .contact-go{margin-top:0;transition:color .2s}
+.contact-links .contact-go:hover{color:var(--gold-300)}
 .form-status a{color:inherit;font-weight:700;text-decoration:underline}
 
 /* ───────── Footer ───────── */
@@ -1050,13 +1055,16 @@ a.contact-card:hover{background:rgba(255,255,255,.1);transform:translateY(-6px);
         <svg class="ico ico-fill" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15l-1.3 4.7 4.8-1.3A10 10 0 1 0 12 2m5.5 14.2c-.2.7-1.3 1.3-1.9 1.3-.5 0-1.1.2-3.6-.8-3-1.3-5-4.4-5.1-4.6s-1.2-1.6-1.2-3 .8-2.1 1-2.4c.3-.3.6-.4.8-.4h.6c.2 0 .5-.1.7.5l1 2.4c.1.2.1.4 0 .6l-.4.6-.3.3c-.1.2-.3.3-.1.6s.7 1.2 1.5 1.9c1 .9 1.9 1.2 2.2 1.3.2.1.4.1.6-.1l.8-1c.2-.2.4-.2.6-.1l2.2 1c.3.1.5.2.6.3.1.2.1.7-.1 1.3"/></svg>
         <h3>WhatsApp</h3><p>+56 9 9676 1602</p><span class="contact-go">Escribir ahora →</span>
       </a>
-      <div class="contact-card reveal">
+      <div class="contact-card contact-card-mail reveal">
+        <button type="button" class="copy-ico" data-copiar="maguayo@mgingenieria.cl" aria-label="Copiar correo" title="Copiar correo">
+          <svg class="i-copiar" viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V6a2 2 0 0 1 2-2h9"/></svg>
+          <svg class="i-ok" viewBox="0 0 24 24" aria-hidden="true"><polyline points="5,12.5 10,17.5 19,7"/></svg>
+        </button>
         <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 7l10 7 10-7"/></svg>
         <h3>Correo</h3><p>maguayo@mgingenieria.cl</p>
-        <div class="contact-actions">
-          <a href="mailto:maguayo@mgingenieria.cl?subject=Consulta%20de%20servicios%20-%20MG%20Ingenier%C3%ADa">Abrir correo</a>
-          <a href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=maguayo@mgingenieria.cl&amp;su=Consulta%20de%20servicios%20-%20MG%20Ingenier%C3%ADa" target="_blank" rel="noopener">Gmail</a>
-          <button type="button" data-copiar="maguayo@mgingenieria.cl">Copiar</button>
+        <div class="contact-links">
+          <a class="contact-go" href="mailto:maguayo@mgingenieria.cl?subject=Consulta%20de%20servicios%20-%20MG%20Ingenier%C3%ADa">Enviar correo →</a>
+          <a class="contact-go" href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=maguayo@mgingenieria.cl&amp;su=Consulta%20de%20servicios%20-%20MG%20Ingenier%C3%ADa" target="_blank" rel="noopener">Gmail →</a>
         </div>
       </div>
       <div class="contact-card reveal">
@@ -1656,17 +1664,23 @@ document.getElementById('btnMail')?.addEventListener('click', () => {
     ` o usa «Copiar resumen» y envíala a ${CONFIG.email}.`);
 });
 
-/* --- Copiar la dirección de correo (tarjeta de contacto) --- */
+/* --- Copiar la dirección de correo (ícono de la tarjeta de contacto) --- */
 document.querySelectorAll('[data-copiar]').forEach(btn => {
+  const etiqueta = btn.getAttribute('aria-label');
   btn.addEventListener('click', async () => {
-    const original = btn.textContent;
     try {
       await copiarTexto(btn.dataset.copiar);
-      btn.textContent = '✓ Copiado';
+      btn.classList.add('copiado');
+      btn.setAttribute('aria-label', 'Correo copiado');
+      btn.title = 'Correo copiado';
     } catch {
-      btn.textContent = 'No se pudo copiar';
+      btn.title = 'No se pudo copiar';
     }
-    setTimeout(() => { btn.textContent = original; }, 2000);
+    setTimeout(() => {
+      btn.classList.remove('copiado');
+      btn.setAttribute('aria-label', etiqueta);
+      btn.title = etiqueta;
+    }, 2000);
   });
 });
 

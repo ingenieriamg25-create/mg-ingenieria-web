@@ -506,17 +506,23 @@ document.getElementById('btnMail')?.addEventListener('click', () => {
     ` o usa «Copiar resumen» y envíala a ${CONFIG.email}.`);
 });
 
-/* --- Copiar la dirección de correo (tarjeta de contacto) --- */
+/* --- Copiar la dirección de correo (ícono de la tarjeta de contacto) --- */
 document.querySelectorAll('[data-copiar]').forEach(btn => {
+  const etiqueta = btn.getAttribute('aria-label');
   btn.addEventListener('click', async () => {
-    const original = btn.textContent;
     try {
       await copiarTexto(btn.dataset.copiar);
-      btn.textContent = '✓ Copiado';
+      btn.classList.add('copiado');
+      btn.setAttribute('aria-label', 'Correo copiado');
+      btn.title = 'Correo copiado';
     } catch {
-      btn.textContent = 'No se pudo copiar';
+      btn.title = 'No se pudo copiar';
     }
-    setTimeout(() => { btn.textContent = original; }, 2000);
+    setTimeout(() => {
+      btn.classList.remove('copiado');
+      btn.setAttribute('aria-label', etiqueta);
+      btn.title = etiqueta;
+    }, 2000);
   });
 });
 
